@@ -1,0 +1,15 @@
+  
+name: Validate JSON
+
+on: [pull_request]
+
+jobs:
+  verify-json-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Validate JSON
+        uses: docker://orrosenblatt/validate-json-action:latest
+        env:
+          INPUT_SCHEMA: /clas.json
+          INPUT_JSONS: /zcl_aff_example.clas.json
