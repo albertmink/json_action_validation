@@ -40,7 +40,6 @@
             "additionalProperties": false,
             "required": [
                 "$schema",
-                "description",
                 "masterLanguage",
                 "abapLanguageVersion"
             ]
@@ -48,6 +47,7 @@
     },
     "additionalProperties": false,
     "required": [
-        "header"
+        "header",
+        "not_existend"
     ]
 }
