@@ -53,13 +53,15 @@ def validate_json( schema, examples):
             try:
                 json_clas = json.loads(file_class.read())
             except json.JSONDecodeError as ex:
+                print("[error] Decoding JSON has failed for " + example)
                 print(ex.msg)
             else:
-                print("decodeJSON successfully finished for " + example)
+                #print("Decoding JSON finished for " + example)
                 try:
                     validate( json_clas, schema_clas )
-                except jsonschema.exceptions.ValidationError:
-                    print("[error] ValidationError for file" + example)
+                except jsonschema.exceptions.ValidationError as exVal:
+                    print("[error] ValidationError for file " + example)
+                    print(exVal.message)
                 else:
                     print("successfully validated " + os.path.basename(example).ljust(31) + "with schema\t" + os.path.basename(schema))
 
