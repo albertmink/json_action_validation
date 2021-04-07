@@ -13,7 +13,7 @@ object_type = ['clas', 'intf', 'nrob']
 def get_all_files_from_repo():
     repo = Repo('./')
     git = repo.git
-    return git.ls_tree('-r', '--name-only', 'main').split('\n')
+    return git.ls_tree('-r', '--name-only', 'HEAD').split('\n')
 
 
 def gather_json_schemata( objects, object_type ):
