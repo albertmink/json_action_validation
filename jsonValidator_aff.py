@@ -47,25 +47,18 @@ def get_schema_example_items( json_schemata, repo_obj ):
 def validate_json( schema, examples):
     with open(schema, 'r') as schema_class:
         schema_clas = json.loads(schema_class.read())
-    print(examples)
-    for example in examples:
-        with open(example, 'r') as file_class:
-            try:
-                json_clas = json.loads(file_class.read())
-            except json.JSONDecodeError as ex:
-                print(ex.msg)
-            else:
-                print("decodeJSON successfully finished for " + example)
-                try:
-                    validate( json_clas, schema_clas )
-                except jsonschema.exceptions.ValidationError:
-                    print("[error] ValidationError for file" + example)
-                else:
-                    print("successfully validated " + os.path.basename(example).ljust(31) + "with schema\t" + os.path.basename(schema))
+    for ex in examples:
+        with open(ex, 'r') as file_class:
+            json_clas = json.loads(file_class.read())
+        try:
+            validate( json_clas, schema_clas )
+        except jsonschema.exceptions.ValidationError:
+            print("[error] ValidationError " + ex)
+        else:
+            print("successfully validated " + os.path.basename(ex).ljust(31) + "with schema\t" + os.path.basename(schema))
 
 
-def validate_json_and_example( json_schemata, repo_obj ):
-    print(get_schema_example_items( json_schemata, repo_obj ) )
+def validate_json_and_example( json_schemata, objects ):
     for schema in get_schema_example_items( json_schemata, repo_obj):
         validate_json( schema[0], schema[1])
 
