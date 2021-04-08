@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema",
-    "$id": "https://raw.githubusercontent.com/albertmink/json_action_validation/main/clas.json",
+    "$id": "https://raw.githubusercontent.com/albertmink/json_action_validation/v0.1/clas.json",
     "type": "object",
     "properties": {
         "header": {
