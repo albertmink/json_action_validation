@@ -1,17 +1,12 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema",
-    "$id": "https://raw.githubusercontent.com/albertmink/json_action_validation/main/clas.json",
+    "$id": "https://raw.githubusercontent.com/albertmink/json_action_validation/v0.2/clas.json",
     "type": "object",
     "properties": {
         "header": {
             "type": "object",
             "title": "Header",
             "properties": {
-                "$schema": {
-                    "type": "string",
-                    "title": "Schema",
-                    "description": "Format version"
-                },
                 "description": {
                     "type": "string",
                     "title": "Description",
@@ -45,7 +40,6 @@
             },
             "additionalProperties": false,
             "required": [
-                "$schema",
                 "description",
                 "masterLanguage",
                 "abapLanguageVersion"

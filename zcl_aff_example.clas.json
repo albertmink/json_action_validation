@@ -1,6 +1,6 @@
 {
+    "$schema": "https://raw.githubusercontent.com/albertmink/json_action_validation/v0.2.1/clas.json",
     "header": {
-        "$schema": "https://github.com/albertmink/json_action_validation/clas.json/clas.json",
         "description": "Example class for ABAP File Formats",
         "masterLanguage": "EN",
         "abapLanguageVersion": "standardUnicode"
