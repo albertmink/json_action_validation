@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "http://github.com/SAP/abap-file-formats/file-formats/clas/clas.json",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "title": "Schema",
+      "description": "Format version"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "$schemas",
+    "header",
+    "category"
+  ]
+}
