@@ -4,6 +4,7 @@ from jsonschema import validate
 from jsonschema import Draft7Validator
 from jsonschema import exceptions
 import os
+import sys
 from git import Repo
 import pprint
 
