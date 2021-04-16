@@ -73,7 +73,7 @@ def validate_json( schema, examples):
                 try:
                     validate( json_clas, schema_clas )
                 except jsonschema.exceptions.ValidationError as exVal:
-                    print(f"::error file={example}::{exVal.msg}")
+                    print(f"::error file={example}::{exVal.message}")
                     print(os.path.basename(example).ljust(31) + " invalid instance of schema " + os.path.basename(schema))
                     print(exVal.message)
                 else:
