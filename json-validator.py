@@ -61,6 +61,7 @@ def get_schema_example_items( json_schemata, repo_obj ):
 
 
 def validate_json( schema, examples):
+    nb_errors = 0
     with open(schema, 'r') as schema_class:
         schema_clas = json.loads(schema_class.read())
     for example in examples:
@@ -68,17 +69,21 @@ def validate_json( schema, examples):
             try:
                 json_clas = json.loads(file_class.read())
             except json.JSONDecodeError as ex:
-                print(example + " invalid JSON")
-                print(ex.msg)
+                print(f"::error file={example} ::{ex.msg}")
+                nb_errors += 1
             else:
                 try:
                     validate( json_clas, schema_clas )
                 except jsonschema.exceptions.ValidationError as exVal:
+                    nb_errors += 1
                     print(f"::error file={example}, line=1, col=1::{exVal.message}")
                     print(f"::error file={os.path.basename(example)}, line=1, col=1::{exVal.message}")
-                    sys.exit(1)
                 else:
                     print(os.path.basename(example).ljust(31) + " valid instance of schema " + os.path.basename(schema))
+
+    if nb_errors > 0:
+        sys.exit(1).
+
 
 def validate_json_and_example( json_schemata, repo_obj ):
     dict_as_list = get_schema_example_items( json_schemata, repo_obj)
