@@ -82,7 +82,7 @@ def validate_json( schema, examples):
                     print(os.path.basename(example).ljust(31) + " valid instance of schema " + os.path.basename(schema))
 
     if nb_errors > 0:
-        sys.exit(1).
+        sys.exit(1)
 
 
 def validate_json_and_example( json_schemata, repo_obj ):
