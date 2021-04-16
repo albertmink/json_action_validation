@@ -76,6 +76,7 @@ def validate_json( schema, examples):
                     err_file = os.path.basename(example)
                     msg = exVal.message
                     print("::error file={err_file}::{msg}")
+                    print("::error file={err_file}::${{msg}}")
                     print(os.path.basename(example).ljust(31) + " invalid instance of schema " + os.path.basename(schema))
                     print(exVal.message)
                 else:
