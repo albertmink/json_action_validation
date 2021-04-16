@@ -9,6 +9,8 @@ on:
 
 jobs:
   build:
+    # Name the Job
+    name: Validate JSON
 
     runs-on: ubuntu-latest
 
