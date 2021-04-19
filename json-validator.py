@@ -82,8 +82,8 @@ def validate_json( schema, examples):
 
 def validate_json_and_example( json_schemata, repo_obj ):
     dict_as_list = get_schema_example_items( json_schemata, repo_obj)
-    print("\nValidate JSON instances")
-    print(f"::group::My title")
+    #print("\nValidate JSON instances")
+    print(f"::group::Validate JSON instances")
     for schema in dict_as_list:
         validate_json( schema[0], schema[1])
     print(f"::endgroup::")
