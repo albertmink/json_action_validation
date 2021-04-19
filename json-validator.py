@@ -11,7 +11,6 @@ import pprint
 # provide ABAP objects as list
 # only schema for this objects are validated
 object_type = ['clas', 'intf', 'nrob', 'chko', 'fugr', 'enho', 'enhs']
-nb_errors = 0
 
 
 def get_all_files_from_repo():
@@ -34,18 +33,8 @@ def validate_json_schemata( json_schemata ):
     print(f"::group::Validate JSON schemata")
     for el in json_schemata:
         with open(os.path.join(el), 'r') as schema_file:
-            try:
-                schema = json.loads(schema_file.read())
-            except json.JSONDecodeError as ex:
-                print(f"::error file={el},line={ex.lineno},col=1::{ex.msg}")
-            else:
-                v = Draft7Validator(schema)
-                try:
-                    Draft7Validator.check_schema(schema)
-                    print(f"::set-output name={el.ljust(31)} is valid")
-                except jsonschema.exceptions.SchemaError as error_ex:
-                    print(f"::error file={el},line=1,col=1::{error_ex.message}")
-    print(f"::endgroup::")
+            schema = json.loads(schema_file.read())
+            Draft7Validator.check_schema(schema)
 
 
 
@@ -62,18 +51,12 @@ def get_schema_example_items( json_schemata, repo_obj ):
 
 
 def validate_json( schema, examples):
-    global nb_errors
     with open(schema, 'r') as schema_class:
         schema_clas = json.loads(schema_class.read())
     for example in examples:
         with open(example, 'r') as file_class:
-            try:
-                json_clas = json.loads(file_class.read())
-            except json.JSONDecodeError as ex:
-                print(f"::error file={example} ::{ex.msg}")
-                nb_errors += 1
-            else:
-                validate( json_clas, schema_clas )
+            json_clas = json.loads(file_class.read())
+            validate( json_clas, schema_clas )
 
 
 def validate_json_and_example( json_schemata, repo_obj ):
@@ -89,5 +72,3 @@ json_schemata = gather_json_schemata( repo_obj, object_type )
 
 #validate_json_schemata( json_schemata )
 validate_json_and_example( json_schemata, repo_obj)
-if nb_errors > 0:
-    sys.exit(1)
