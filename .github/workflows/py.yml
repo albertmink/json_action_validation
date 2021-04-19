@@ -1,4 +1,4 @@
-name: Validate JSON
+name: pytest demo
 
 on:
   push:
