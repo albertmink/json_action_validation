@@ -26,5 +26,4 @@ jobs:
         pip install -r requirements.txt
     - name: Test with pytest
       run: |
-        pip install pytest
         pytest json-validator.py --doctest-modules --junitxml=junit/test-results.xml
