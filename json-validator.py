@@ -7,6 +7,7 @@ import os
 import sys
 from git import Repo
 import pprint
+import pytest
 
 # provide ABAP objects as list
 # only schema for this objects are validated
@@ -40,8 +41,6 @@ def validate_json_schemata( json_schemata ):
                 print(ex.msg+" at line "+str(ex.lineno))
             else:
                 v = Draft7Validator(schema)
-                for error in Draft7Validator.iter_errors(schema):
-                    print(error)
                 try:
                     Draft7Validator.check_schema(schema)
                     print(el.ljust(31)+ "is valid")
@@ -77,10 +76,9 @@ def validate_json( schema, examples):
                 except jsonschema.exceptions.ValidationError as exVal:
                     nb_errors += 1
                     print(f"::error file={example},line=1,col=1::{exVal.message}")
-                    print(f"::error file={os.path.basename(example)},line=1,col=1::{exVal.message}")
+                    pytest.fail(exVal.message)
                 else:
                     print(os.path.basename(example).ljust(31) + " valid instance of schema " + os.path.basename(schema))
-
     if nb_errors > 0:
         sys.exit(1)
 
