@@ -18,11 +18,13 @@ jobs:
       - name: Set up node
         uses: action/setup-node@v2
         with:
-          node-version": '14'
-      - run: npm install
-      - run: npm install ajv-cli
+          node-version": "14"
+      - name: Install req
+        run: npm install
+      - name: Install ajv-cli
+        run: npm install ajv-cli
       - name: Exec script
-      - run: |
+        run: |
           # make file runnable, might not be necessary
           chmod +x "script.sh"
 
