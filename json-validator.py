@@ -54,8 +54,9 @@ def get_schema_example_items( json_schemata, repo_obj ):
     for schema in json_schemata:
         filename = os.path.basename(schema)
         dict_json[schema] = list(filter(lambda el: el.endswith(filename) and os.path.basename(el) != filename, repo_obj))
-    print("Found matches of JSON schema and instances")
+    print(f"::group::Validate JSON instances")
     pprint.pprint(dict_json)
+    print(f"::endgroup::")
     return dict_json.items()
 
 
@@ -77,12 +78,12 @@ def validate_json( schema, examples):
                     nb_errors += 1
                     print(f"::error file={example},line=1,col=1::{exVal.message}")
                 else:
+                    print(f"::set-output name={os.path.basename(example).ljust(31)} + " valid instance of schema " + {os.path.basename(schema)})
                     print(os.path.basename(example).ljust(31) + " valid instance of schema " + os.path.basename(schema))
 
 
 def validate_json_and_example( json_schemata, repo_obj ):
     dict_as_list = get_schema_example_items( json_schemata, repo_obj)
-    #print("\nValidate JSON instances")
     print(f"::group::Validate JSON instances")
     for schema in dict_as_list:
         validate_json( schema[0], schema[1])
