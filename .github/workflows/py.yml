@@ -1,4 +1,4 @@
-name: Python package
+name: Validate JSON
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     # Name the Job
-    name: Validate JSON
+    name: pytest demo
 
     runs-on: ubuntu-latest
 
@@ -22,8 +22,9 @@ jobs:
         python-version: '3.6'
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip setuptools wheel
+        python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: Run validation script
+    - name: Test with pytest
       run: |
-        python json-validator.py
+        pip install pytest
+        pytest ex.py --doctest-modules --junitxml=junit/test-results.xml
