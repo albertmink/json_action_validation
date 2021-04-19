@@ -11,6 +11,7 @@ import pprint
 # provide ABAP objects as list
 # only schema for this objects are validated
 object_type = ['clas', 'intf', 'nrob', 'chko', 'fugr', 'enho', 'enhs']
+nb_errors = 0
 
 
 def get_all_files_from_repo():
@@ -59,7 +60,7 @@ def get_schema_example_items( json_schemata, repo_obj ):
 
 
 def validate_json( schema, examples):
-    nb_errors = 0
+    global nb_errors
     with open(schema, 'r') as schema_class:
         schema_clas = json.loads(schema_class.read())
     for example in examples:
@@ -77,15 +78,15 @@ def validate_json( schema, examples):
                     print(f"::error file={example},line=1,col=1::{exVal.message}")
                 else:
                     print(os.path.basename(example).ljust(31) + " valid instance of schema " + os.path.basename(schema))
-    if nb_errors > 0:
-        sys.exit(1)
 
 
 def validate_json_and_example( json_schemata, repo_obj ):
     dict_as_list = get_schema_example_items( json_schemata, repo_obj)
     print("\nValidate JSON instances")
+    print(f"::group::My title")
     for schema in dict_as_list:
         validate_json( schema[0], schema[1])
+    print(f"::endgroup::")
 
 
 repo_obj = get_all_files_from_repo()
@@ -93,4 +94,5 @@ json_schemata = gather_json_schemata( repo_obj, object_type )
 
 #validate_json_schemata( json_schemata )
 validate_json_and_example( json_schemata, repo_obj)
-sys.exit(0)
+if nb_errors > 0:
+    sys.exit(1)
