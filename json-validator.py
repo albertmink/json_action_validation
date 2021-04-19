@@ -31,21 +31,22 @@ def gather_json_schemata( objects, object_type ):
 
 
 def validate_json_schemata( json_schemata ):
-    print("Validate JSON schemata")
+    print(f"::group::Validate JSON schemata")
     for el in json_schemata:
         with open(os.path.join(el), 'r') as schema_file:
             try:
                 schema = json.loads(schema_file.read())
             except json.JSONDecodeError as ex:
-                print("[error] Decoding JSON has failed for " + el)
-                print(ex.msg+" at line "+str(ex.lineno))
+                print(f"::error file={el},line={ex.lineno},col=1::{ex.msg}")
             else:
                 v = Draft7Validator(schema)
                 try:
                     Draft7Validator.check_schema(schema)
-                    print(el.ljust(31)+ "is valid")
+                    print(f"::set-output name={el.ljust(31)} is valid")
                 except jsonschema.exceptions.SchemaError as error_ex:
-                    print("Bad JSON schema "+el)
+                    print(f"::error file={el},line=1,col=1::{error_ex.message}")
+    print(f"::endgroup::")
+
 
 
 def get_schema_example_items( json_schemata, repo_obj ):
@@ -78,7 +79,7 @@ def validate_json( schema, examples):
                     nb_errors += 1
                     print(f"::error file={example},line=1,col=1::{exVal.message}")
                 else:
-                    print(f"::set-output name={os.path.basename(example).ljust(31)} + " valid instance of schema " + {os.path.basename(schema)})
+                    print(f"::set-output name={os.path.basename(example).ljust(31)} valid instance of schema {os.path.basename(schema)})
                     print(os.path.basename(example).ljust(31) + " valid instance of schema " + os.path.basename(schema))
 
 
