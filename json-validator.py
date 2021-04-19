@@ -55,7 +55,7 @@ def get_schema_example_items( json_schemata, repo_obj ):
     for schema in json_schemata:
         filename = os.path.basename(schema)
         dict_json[schema] = list(filter(lambda el: el.endswith(filename) and os.path.basename(el) != filename, repo_obj))
-    print(f"::group::Validate JSON instances")
+    print(f"::group::Print schema/instance matches")
     pprint.pprint(dict_json)
     print(f"::endgroup::")
     return dict_json.items()
