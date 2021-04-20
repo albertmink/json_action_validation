@@ -1,6 +1,5 @@
 import json
 import jsonschema
-from jsonschema import validate
 from jsonschema import Draft7Validator
 from jsonschema import exceptions
 import os
@@ -30,25 +29,6 @@ def gather_json_schemata( objects, object_type ):
     return json_schemata
 
 
-def validate_json_schemata( json_schemata ):
-    print(f"::group::Validate JSON schemata")
-    for el in json_schemata:
-        with open(os.path.join(el), 'r') as schema_file:
-            try:
-                schema = json.loads(schema_file.read())
-            except json.JSONDecodeError as ex:
-                print(f"::error file={el},line=1,col=1::{ex.msg}")
-            else:
-                try:
-                    Draft7Validator.check_schema(schema)
-                    #print(f"::set-output name={el.ljust(31)} is valid")
-                    print(el + "\t\tis valid")
-                except jsonschema.exceptions.SchemaError as error_ex:
-                    print(f"::error file={el},line=1,col=1::{error_ex.message}")
-    print(f"::endgroup::")
-
-
-
 def get_schema_example_items( json_schemata, repo_obj ):
     # build dict with key: json schema and value: json example
     dict_json = {}
@@ -60,32 +40,37 @@ def get_schema_example_items( json_schemata, repo_obj ):
     print(f"::endgroup::")
     return dict_json.items()
 
+def decode_json( json_file ):
+    global nb_errors
+    with open(json_file, 'r') as schema_f:
+        try:
+            schema = json.loads(schema_f.read())
+        except json.JSONDecodeError as ex:
+            print(f"::error file={json_file},line=1,col=1::{ex.msg}")
+            nb_errors += 1
+        else:
+            return schema
 
 def validate_json( schema, examples):
     global nb_errors
-    with open(schema, 'r') as schema_class:
-        schema_clas = json.loads(schema_class.read())
+    json_schema = decode_json( schema )
     for example in examples:
-        with open(example, 'r') as file_class:
-            try:
-                json_clas = json.loads(file_class.read())
-            except json.JSONDecodeError as ex:
-                print(f"::error file={example},line=1,col=1::{ex.msg}")
-                nb_errors += 1
-            else:
-                try:
-                    validate( json_clas, schema_clas )
-                except jsonschema.exceptions.ValidationError as exVal:
-                    nb_errors += 1
-                    print(f"::error file={example},line=1,col=1::{exVal.message}")
-                else:
-                    #print(f"::set-output name={os.path.basename(example).ljust(31)} valid instance of schema {os.path.basename(schema)}" )
-                    print(os.path.basename(example).ljust(31) + " valid instance of schema " + os.path.basename(schema))
+        json_instance = decode_json( example )
+        try:
+            Draft7Validator(json_schema).validate(json_instance)
+        except jsonschema.exceptions.ValidationError as exVal:
+            nb_errors += 1
+            print(f"::error file={example},line=1,col=1::{exVal.message}")
+        except jsonschema.exceptions.SchemaError as error_ex:
+            print(f"::error file={example},line=1,col=1::{error_ex.message}")
+        else:
+            #print(f"::set-output name={os.path.basename(example).ljust(31)} valid instance of schema {os.path.basename(schema)}" )
+            print(os.path.basename(example).ljust(31) + " valid instance of schema " + os.path.basename(schema))
 
 
 def validate_json_and_example( json_schemata, repo_obj ):
     dict_as_list = get_schema_example_items( json_schemata, repo_obj)
-    print(f"::group::Validate JSON instances")
+    print(f"::group::Validate JSON")
     for schema in dict_as_list:
         validate_json( schema[0], schema[1])
     print(f"::endgroup::")
@@ -94,7 +79,6 @@ def validate_json_and_example( json_schemata, repo_obj ):
 repo_obj = get_all_files_from_repo()
 json_schemata = gather_json_schemata( repo_obj, object_type )
 
-validate_json_schemata( json_schemata )
 validate_json_and_example( json_schemata, repo_obj)
 if nb_errors > 0:
     sys.exit(1)
