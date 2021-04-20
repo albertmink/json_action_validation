@@ -14,10 +14,10 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           json_schema: ./clas/clas.json
-          json_path_pattern: .*/examples/*clas.json$
+          json_path_pattern: .*clas.json$
       - name: Validate other schema
         uses: snapcart/json-schema-validator@v1.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           json_schema: ./intf/intf.json
-          json_path_pattern: .*/examples/*intf.json$
+          json_path_pattern: .*intf.json$
