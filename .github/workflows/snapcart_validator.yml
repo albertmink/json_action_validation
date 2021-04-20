@@ -1,9 +1,6 @@
 name: Validate JSON (snapcart)
 
 on:
-  push:
-    branches-ignore: [main]
-    # Remove the line above to run when pushing to master
   pull_request:
     branches: [main]
 jobs:
