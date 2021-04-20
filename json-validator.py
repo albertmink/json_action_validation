@@ -19,7 +19,7 @@ def get_all_files_from_repo():
     return git.ls_tree('-r', '--name-only', 'HEAD').split('\n')
 
 
-def gather_json_schemata( objects, object_type ):
+def gather_json_schemata( objects ):
     json_schemata = []
     # find json schema of type <ABAB_object>.json
     for object_with_path in objects:
@@ -62,6 +62,7 @@ def validate_json( schema, examples):
             nb_errors += 1
             print(f"::error file={example},line=1,col=1::{exVal.message}")
         except jsonschema.exceptions.SchemaError as error_ex:
+            nb_errors += 1
             print(f"::error file={example},line=1,col=1::{error_ex.message}")
         else:
             #print(f"::set-output name={os.path.basename(example).ljust(31)} valid instance of schema {os.path.basename(schema)}" )
@@ -77,7 +78,7 @@ def validate_json_and_example( json_schemata, repo_obj ):
 
 
 repo_obj = get_all_files_from_repo()
-json_schemata = gather_json_schemata( repo_obj, object_type )
+json_schemata = gather_json_schemata( repo_obj )
 
 validate_json_and_example( json_schemata, repo_obj)
 if nb_errors > 0:
