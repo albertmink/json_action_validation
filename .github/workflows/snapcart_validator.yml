@@ -14,10 +14,10 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           json_schema: ./clas/clas.json
-          json_path_pattern: .*clas.json$
+          json_path_pattern: .*/example/.*clas.json$
       - name: Validate NROB schema
         uses: snapcart/json-schema-validator@v1.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           json_schema: ./nrob/nrob.json
-          json_path_pattern: .*z_aff_nr.nrob.json$
+          json_path_pattern: .*/example/.*nrob.json$
