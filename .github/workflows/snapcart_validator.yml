@@ -15,8 +15,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           json_schema: ./clas/clas.json
           json_path_pattern: .*/examples/*clas.json$
-          send_comment: true
-          clear_comments: true
       - name: Validate other schema
         uses: snapcart/json-schema-validator@v1.0.0
         with:
